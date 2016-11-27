@@ -4,6 +4,16 @@ Przykład z książki – Adolfo Builes, _JSON API by Example_ –
 
 * The application will allow us to keep track of items we lend to our friends.
 
+The main resources will be **friends**, **articles** and **loans** (pol.
+_wypożyczki_). We can create as many friends and articles as we want. Each
+friend will be able to borrow any number of articles as long as they are
+available.
+
+We’ll need to keep track of the status of every article (e.g. _borrowed_ or
+_returned_) and we’ll need the option of adding notes to it.
+
+----
+
 **Purpose:** Want to learn about JSON API by error messages driven development,
 [EMD2](http://www.progressrail.com) in short.
 

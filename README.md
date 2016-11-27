@@ -15,6 +15,9 @@ Purpose: Want to learn about JSON API.
 * System dependencies:
   - [jq](https://github.com/stedolan/jq) –
     [playground](https://jqplay.org), [docs](https://stedolan.github.io/jq/)
+  - [HTTPie](https://httpie.org) – a command line HTTP client with
+    an intuitive UI, JSON support, syntax highlighting,
+    wget-like downloads, extensions
 * Database creation: TODO
 * Database initialization: TODO
 * How to run the test suite: TODO

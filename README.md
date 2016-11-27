@@ -20,6 +20,43 @@ application up and running.
 
 * Deployment instructions
 
+## JSON:API
+
+[json:api](http://jsonapi.org/) – a specification for building APIs in JSON.
+
+Console:
+
+```bash
+rails g model User name:string
+rails g model Post user:references title:string body:text
+rails g model Comment post:references user:references body:text
+rails db:migrate
+```
+
+Ruby:
+
+```ruby
+gem 'faker'
+gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
+gem 'jsonapi-resources', github: 'cerebris/jsonapi-resources', branch: 'rails5'
+```
+
+Seed database:
+
+```ruby
+george = User.where(name: Faker::Name.name).create
+bob = User.where(name: Faker::Name.name).create
+
+2.times do
+  post = george.posts.create(
+    title: [Faker::Hacker.adjective, Faker::Hacker.noun].join(' ').titleize,
+    body: Faker::Hacker.say_something_smart
+  )
+  post.comments.create(body: Faker::Hipster.sentence, user: bob)
+end
+```
+
+
 ## Up and running
 
 ```sh
@@ -82,8 +119,3 @@ curl localhost:3000/friends | jq
 }
 ```
 
-
-
-
-
-## TODO

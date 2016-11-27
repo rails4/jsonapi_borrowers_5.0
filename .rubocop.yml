@@ -15,3 +15,6 @@ Style/StringLiterals:
 
 Style/Documentation:
   Enabled: false
+
+Style/FileName:
+  Enabled: false

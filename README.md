@@ -1,6 +1,6 @@
 # Borrowers JSON API
 
-Przykład z książki – Adolfo Builes, _JSON API by Exmple_.
+Przykład z książki – Adolfo Builes, _JSON API by Example_.
 
 **Purpose:** Want to learn about JSON API by error messages driven development,
 [EMD2](http://www.progressrail.com) in short.

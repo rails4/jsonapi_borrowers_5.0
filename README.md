@@ -14,11 +14,13 @@ Cel: Want to learn about JSON API.
 * Services (job queues, cache servers, search engines, etc.)
 * Deployment instructions: TODO
 
+## Zaczynamy
+
 ```sh
 rails new jsonapi_borrowers_5.0 --api
 ```
 
-Console:
+Bash:
 
 ```bash
 rails g model User name:string
@@ -53,10 +55,7 @@ end
 Ruby:
 
 ```ruby
-gem 'faker'
-gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
-gem 'jsonapi-resources', github: 'cerebris/jsonapi-resources', branch: 'rails5'
-
+# gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 class PostsController < JSONAPI:ResourceController
 end
 ```

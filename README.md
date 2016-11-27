@@ -48,7 +48,7 @@ cd jsonapi_borrowers_5.0
 bundle install
 ```
 
-Next generate model and accompanying resource:
+Begin with generating a model and accompanying resource:
 ```sh
 rails g model friend first_name:string last_name:string email:string twitter:string
 rails db: migrate

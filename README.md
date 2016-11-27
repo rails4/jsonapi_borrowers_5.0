@@ -73,17 +73,26 @@ Run Rails server
 rails server
 ```
 
-
-
-
-
-
-
+Curl or HTTPie?
+```sh
+curl http://localhost:3000/friends | jq
+http localhost:3000/friends
+```
 
 Show HTTP status codes:
 ```sh
 cheat http
 ```
+
+
+
+
+
+
+
+
+
+
 
 ```sh
 rails new borrowers-api --api

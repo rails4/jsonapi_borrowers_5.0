@@ -1,6 +1,8 @@
 # Borrowers JSON API
 
-Przykład z książki – Adolfo Builes, _JSON API by Example_.
+Przykład z książki – Adolfo Builes, _JSON API by Example_ –
+
+* The application will allow us to keep track of items we lend to our friends.
 
 **Purpose:** Want to learn about JSON API by error messages driven development,
 [EMD2](http://www.progressrail.com) in short.
@@ -27,15 +29,26 @@ Przykład z książki – Adolfo Builes, _JSON API by Example_.
 * Deployment instructions: TODO
 
 
-## Getting started
+## Up and running
 
 Generate a new Rails application preconfigure for API only apps:
 ```sh
 rails new jsonapi_borrowers_5.0 --api
 ```
 
+Next generate model and accompanying resource:
+```sh
 
-## Up and running
+```
+
+
+
+
+
+
+
+
+
 
 Show HTTP status codes:
 ```sh

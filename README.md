@@ -44,13 +44,30 @@ _returned_) and we’ll need the option of adding notes to it.
 Generate a new Rails application preconfigure for API only apps:
 ```sh
 rails new jsonapi_borrowers_5.0 --api
+cd jsonapi_borrowers_5.0
+bundle install
 ```
 
 Next generate model and accompanying resource:
 ```sh
+rails g model friend first_name:string last_name:string email:string twitter:string
+rails db: migrate
 
+rails generate jsonapi:resource friend
 ```
 
+Resource:
+```json
+{
+  "type": "friends",
+  "id": "1",
+  "attributes": {
+    "first-name": "Adolfo",
+    "last-name": "Builes",
+    "email": "ab@example.com"
+  }
+}
+```
 
 
 

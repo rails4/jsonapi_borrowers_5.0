@@ -1,28 +1,22 @@
-# Borrowers API
+# Borrowers JSON API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Przykład z książki – Adolfo Builes, _JSON API by Exmple_.
+Cel: Want to learn about JSON API.
 
-* Ruby version: 2.3.1
-
-* System dependencies
-
-* Configuration:
-  - https://github.com/cerebris/jsonapi-resources
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
+* Ruby version: 2.3.3
+* Gem dependencies:
+  [jsonapi-resources](https://github.com/cerebris/jsonapi-resources), 0.8.1
+* API dependencies:
+  [JSON:API](http://jsonapi.org/) – a specification for building APIs in JSON)
+* Database creation: TODO
+* Database initialization: TODO
+* How to run the test suite: TODO
 * Services (job queues, cache servers, search engines, etc.)
+* Deployment instructions: TODO
 
-* Deployment instructions
-
-## JSON:API
-
-[json:api](http://jsonapi.org/) – a specification for building APIs in JSON.
+```sh
+rails new jsonapi_borrowers_5.0 --api
+```
 
 Console:
 
@@ -162,4 +156,3 @@ curl localhost:3000/friends | jq
   "data": []
 }
 ```
-

@@ -17,7 +17,7 @@ Purpose: Want to learn about JSON API.
     [playground](https://jqplay.org), [docs](https://stedolan.github.io/jq/)
   - [HTTPie](https://httpie.org) – a command line HTTP client with
     an intuitive UI, JSON support, syntax highlighting,
-    wget-like downloads, extensions
+    wget-like downloads, extensions, [docs](https://httpie.org/docs)
 * Database creation: TODO
 * Database initialization: TODO
 * How to run the test suite: TODO

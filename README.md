@@ -1,7 +1,9 @@
 # Borrowers JSON API
 
 Przykład z książki – Adolfo Builes, _JSON API by Exmple_.
-Purpose: Want to learn about JSON API.
+
+**Purpose:** Want to learn about JSON API by error messages driven development,
+[EMD2](http://www.progressrail.com) in short.
 
 * Ruby version: 2.3.3
 * Gem dependencies:

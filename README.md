@@ -55,6 +55,12 @@ rails db: migrate
 rails generate jsonapi:resource friend
 ```
 
+_app/resources/friend_resource.rb_
+```ruby
+class FriendResource < JSONAPI::Resource
+end
+```
+
 Resource:
 ```json
 {
@@ -84,95 +90,78 @@ Show HTTP status codes:
 cheat http
 ```
 
-## Trying to create a friend
-
-TODO
-
-
-
-
-
-
+## Trying to get friends
 
 ```sh
-rails new borrowers-api --api
-rails g model friend first_name:string last_name:string email:string twitter:string
-    invoke  active_record
-    create    db/migrate/20160513110627_create_friends.rb
-    create    app/models/friend.rb
-    invoke    test_unit
-    create      test/models/friend_test.rb
-    create      test/fixtures/friends.yml
-rails db:migrate
-rails serve
+http localhost:3000/friends
+```
+displays this error message (on terminal running rails server)
+```
+Started GET "/friends" for ::1 at 2016-11-28 09:28:36 +0100
+  ActiveRecord::SchemaMigration Load (0.4ms)  SELECT "schema_migrations".* FROM "schema_migrations"
+
+ActionController::RoutingError (No route matches [GET] "/friends"):
 ```
 
-Resource model:
-
-```json
-{
-  "type": "friends",
-  "id": "1",
-  "attributes": {
-    "first_name": "Włodek",
-    "last_name": "Bzyl",
-     "email": "wb@rails.pl"
-  }
-}
-```
+We have not defined a route for a friend.
 ```sh
-rails g jsonapi:resource friend
-    create  app/resources/friend_resource.rb
-```
-```ruby
-class FriendResource < JSONAPI::Resource
-end
-```
-```sh
-curl localhost:3000/friends # {"status":404,"error":"Not Found","exception …
 rails g controller friends
-    create  app/controllers/friends_controller.rb
-    invoke  test_unit
-    create    test/controllers/friends_controller_test.rb
-```      
+  create  app/controllers/friends_controller.rb
+  invoke  test_unit
+  create  test/controllers/friends_controller_test.rb
+```
+and define in _routes.rb_ routes to friends resource
 ```ruby
-# app/controllers/friends_controller.rb
-# class FriendsController < ApplicationController
-#   JSONAPI::ResourceController
-# end
-class FriendsController < JSONAPI::ResourceController
-end
 # config/routes.rb
 Rails.application.routes.draw do
   jsonapi_resources :friends
 end
 ```
+
+**jsonapi_resources** offers two ways to help bring together our controllers and
+resources: we can either inherit from _JSONAPI::ResourceController_, or use the
+_ActsAsResourceController_ module.
+
+Let change the controller to use _JSONAPI::ResourceController_:
+```ruby
+# class ApplicationController < ActionController::API
+# end
+# class FriendsController < ApplicationController
+# end
+class FriendsController < JSONAPI::ResourceController
+end
+```
+
+Now, try
 ```sh
-curl localhost:3000/friends | jq
+http localhost:3000/friends
 {
   "data": []
 }
 ```
+This yields expected result, since we don’t yet have any friends.
 
 
-## TODO
+## Trying to create a friend
 
-Bash:
+```sh
+curl -s -i localhost:3000/friends -X POST --data-binary ''
+curl -s    localhost:3000/friends -X POST --data-binary '' | jq
 
-```bash
-rails g model User name:string
-rails g model Post user:references title:string body:text
-rails g model Comment post:references user:references body:text
-rails db:migrate
+curl -s localhost:3000/friends -X POST -H 'Content-Type: application/vnd.api+json' | jq
+curl -s localhost:3000/friends -i -X POST -H 'Content-Type: application/vnd.api+json' \
+  --data-binary '' | jq
+curl -s localhost:3000/friends -i -X POST -H 'Content-Type: application/vnd.api+json' \
+  --data-binary '{"data":{"type":"friends","attributes":{}}}' | jq
 ```
 
-Ruby:
 
-```ruby
-gem 'faker'
-gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
-gem 'jsonapi-resources', github: 'cerebris/jsonapi-resources', branch: 'rails5'
-```
+
+
+
+
+
+## Fake stuff
 
 Seed database:
 

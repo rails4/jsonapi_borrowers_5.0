@@ -238,7 +238,7 @@ class FriendTest < ActiveSupport::TestCase
   end
 end
 ```
-Test should fail.
+Tests should fail.
 ```sh
 rake test test/models/friend_test.rb # use rake -- not rails
 ```

@@ -237,7 +237,7 @@ class FriendTest < ActiveSupport::TestCase
   end
 end
 ```
-Test should fails.
+Test should fail.
 ```sh
 rake test test/models/friend_test.rb # use rake -- not rails
 ```
@@ -253,7 +253,43 @@ Tests should pass.
 ```sh
 rake test test/models/friend_test.rb # use rake -- not rails
 ```
-
+```sh
+cfp -d'{"data":{"type":"friends", "attributes":{}}}' \
+| jq
+```
+```json
+{
+  "errors": [
+    {
+      "title": "can't be blank",
+      "detail": "first-name - can't be blank",
+      "code": "100",
+      "source": {
+        "pointer": "/data/attributes/first-name"
+      },
+      "status": "422"
+    },
+    {
+      "title": "can't be blank",
+      "detail": "email - can't be blank",
+      "code": "100",
+      "source": {
+        "pointer": "/data/attributes/email"
+      },
+      "status": "422"
+    },
+    {
+      "title": "can't be blank",
+      "detail": "last-name - can't be blank",
+      "code": "100",
+      "source": {
+        "pointer": "/data/attributes/last-name"
+      },
+      "status": "422"
+    }
+  ]
+}
+```
 
 
 

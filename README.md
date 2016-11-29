@@ -32,7 +32,7 @@ _returned_) and we’ll need the option of adding notes to it.
   - [HTTPie](https://httpie.org) – a command line HTTP client with
     an intuitive UI, JSON support, syntax highlighting,
     wget-like downloads, extensions, [docs](https://httpie.org/docs)
-* Database creation: TODO
+* Database creation: TODO – use MongoDB with Mongoid
 * Database initialization: TODO
 * How to run the test suite: TODO
 * Services (job queues, cache servers, search engines, etc.)

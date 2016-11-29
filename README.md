@@ -211,6 +211,48 @@ cpf -d '{"data":{"type":"friends", "attributes":{"first-name":"Cyril", "last-nam
 | jq
 ```
 
+### Model validation
+
+```ruby
+# test/models/friend_test.rb
+require 'test_helper'
+
+class FriendTest < ActiveSupport::TestCase
+  test 'requires first_name' do
+    friend = Friend.new(last_name: 'A', email: 'a@example.com')
+    assert_not friend.save, 'Saved friend without first_name'
+    assert_not_empty friend.errors[:first_name]
+  end
+
+  test 'requires last_name' do
+    friend = Friend.new(first_name: 'B', email: 'b@example.com')
+    assert_not friend.save, 'Saved friend without last_name'
+    assert_not_empty friend.errors[:last_name]
+  end
+
+  test 'requires email' do
+    friend = Friend.new(first_name: 'C', last_name: 'D')
+    assert_not friend.save, 'Saved friend without email'
+    assert_not_empty friend.errors[:email]
+  end
+end
+```
+Test should fails.
+```sh
+rake test test/models/friend_test.rb # use rake -- not rails
+```
+```ruby
+# models/friend.rb
+class Friend < ActiveRecord::Base
+  validates :first_name, presence: true
+  validates :email, presence: true
+  validates :last_name, presence: true
+end
+```
+Tests should pass.
+```sh
+rake test test/models/friend_test.rb # use rake -- not rails
+```
 
 
 

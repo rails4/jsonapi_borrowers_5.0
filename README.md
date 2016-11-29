@@ -207,9 +207,10 @@ class FriendResource < JSONAPI::Resource
 end
 ```
 ```sh
-cpf -d '{"data":{"type":"friends", "attributes":{"first-name":"Cyril", "last-name":"Neveu"}}}' \
+cpf -d '{"data":{"type":"friends", "attributes":{"first-name":"Cyryl", "last-name":"Metody"}}}' \
 | jq
 ```
+
 
 ### Model validation
 

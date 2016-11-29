@@ -197,6 +197,21 @@ cpf -d '{"data":{"type":"friends", "attributes":{"first-name":"Cyril", "last-nam
   ]
 }
 ```
+```ruby
+# resources/friend_resource.rb
+class FriendResource < JSONAPI::Resource
+  attributes :first_name, :last_name, :email
+  attribute :twitter
+end
+```
+```sh
+cpf -d '{"data":{"type":"friends", "attributes":{"first-name":"Cyril", "last-name":"Neveu"}}}' \
+| jq
+```
+
+
+
+
 
 
 ## Fake stuff

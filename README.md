@@ -291,6 +291,12 @@ cfp -d'{"data":{"type":"friends", "attributes":{}}}' \
   ]
 }
 ```
+```sh
+cheat http # check for status 422
+```
+
+
+
 
 
 

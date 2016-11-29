@@ -19,7 +19,9 @@ _returned_) and we’ll need the option of adding notes to it.
 
 * Ruby version: 2.3.3
 * Gem dependencies:
-  * [jsonapi-resources](https://github.com/cerebris/jsonapi-resources), 0.8.1
+  - [jsonapi-resources](https://github.com/cerebris/jsonapi-resources), 0.8.1
+  - consider use of
+    the [jsonapi-utils](https://github.com/tiagopog/jsonapi-utils) gem
   - [cheat](http://cheat.errtheblog.com) – puts Ruby-centric cheat sheets
     right into your terminal ,
     [faker](https://github.com/stympy/faker) – a library for generating

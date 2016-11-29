@@ -153,6 +153,10 @@ curl -s localhost:3000/friends -i -X POST -H 'Content-Type: application/vnd.api+
   --data-binary '' | jq
 curl -s localhost:3000/friends -i -X POST -H 'Content-Type: application/vnd.api+json' \
   --data-binary '{"data":{"type":"friends","attributes":{}}}' | jq
+
+# doesn’t work
+http --json POST 'http://localhost:3000/friends' 'Content-Type':'application/vnd.api+json' \
+    data:='{"type": "friends", "attributes": {}}'
 ```
 
 

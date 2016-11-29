@@ -178,7 +178,7 @@ alias cpf="curl -s localhost:3000/friends -X POST -H 'Content-Type: application/
 ```
 
 ```sh
-cpf -d '{"data":{"type":"friends", "attributes":{"first-name":"Cyril", "last-name":"Neveu"}}}' \
+cpf -d '{"data":{"type":"friends", "attributes":{"first-name":"Cyryl", "last-name":"Metody"}}}' \
 | jq
 ```
 ```json

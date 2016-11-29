@@ -148,21 +148,55 @@ This yields expected result, since we don’t yet have any friends.
 curl -s -i localhost:3000/friends -X POST --data-binary ''
 curl -s    localhost:3000/friends -X POST --data-binary '' | jq
 
-curl -s localhost:3000/friends -X POST -H 'Content-Type: application/vnd.api+json' | jq
-curl -s localhost:3000/friends -i -X POST -H 'Content-Type: application/vnd.api+json' \
-  --data-binary '' | jq
-curl -s localhost:3000/friends -i -X POST -H 'Content-Type: application/vnd.api+json' \
-  --data-binary '{"data":{"type":"friends","attributes":{}}}' | jq
+curl -s localhost:3000/friends -X POST -H 'Content-Type: application/vnd.api+json' \
+| jq
+curl -s localhost:3000/friends -X POST -H 'Content-Type: application/vnd.api+json' \
+  -d '' \
+| jq
+curl -s localhost:3000/friends -X POST -H 'Content-Type: application/vnd.api+json' \
+  -d '{"data": {"type":"friends", "attributes":{}}}' \
+| jq
+```
 
-# doesn’t work
+HTTPie doesn’t work:
+```sh
 http --json POST 'http://localhost:3000/friends' 'Content-Type':'application/vnd.api+json' \
     data:='{"type": "friends", "attributes": {}}'
 ```
 
+Try to delete some friends:
+```sh
+curl -i -X DELETE localhost:3000/friends/2
+curl -i -X DELETE localhost:3000/friends/8
+```
 
+Create an alias for curl/POST:
+```sh
+alias cpf="curl -s localhost:3000/friends -X POST -H 'Content-Type: application/vnd.api+json'"
+```
 
-
-
+```sh
+cpf -d '{"data":{"type":"friends", "attributes":{"first-name":"Cyril", "last-name":"Neveu"}}}' \
+| jq
+```
+```json
+{
+  "errors": [
+    {
+      "title": "Param not allowed",
+      "detail": "first-name is not allowed.",
+      "code": "105",
+      "status": "400"
+    },
+    {
+      "title": "Param not allowed",
+      "detail": "last-name is not allowed.",
+      "code": "105",
+      "status": "400"
+    }
+  ]
+}
+```
 
 
 ## Fake stuff

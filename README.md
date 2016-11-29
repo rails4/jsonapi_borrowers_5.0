@@ -294,9 +294,35 @@ cfp -d'{"data":{"type":"friends", "attributes":{}}}' \
 ```sh
 cheat http # check for status 422
 ```
-
-
-
+```sh
+cpf -d '{
+  "data": {
+    "type": "friends",
+    "attributes": {
+      "first-name": "Cyryl",
+      "last-name": "Metody",
+      "email": "cm@example.com"
+    }
+  }
+}' | jq
+```
+```json
+{
+  "data": {
+    "id": "13",
+    "type": "friends",
+    "links": {
+      "self": "http://localhost:3000/friends/13"
+    },
+    "attributes": {
+      "first-name": "Cyryl",
+      "last-name": "Metody",
+      "email": "cm@example.com",
+      "twitter": null
+    }
+  }
+}
+```
 
 
 

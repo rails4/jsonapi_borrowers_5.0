@@ -172,12 +172,6 @@ http POST 'http://localhost:3000/friends' \
   }'
 ```
 
-Try to delete some friends:
-```sh
-curl -i -X DELETE localhost:3000/friends/2
-curl -i -X DELETE localhost:3000/friends/8
-```
-
 Create an alias for curl/POST:
 ```sh
 alias cpf="curl -s localhost:3000/friends -X POST -H 'Content-Type: application/vnd.api+json'"
@@ -357,63 +351,22 @@ cpf -d '{
 }
 ```
 
+### Deleting _friends_
 
-
-
-## Fake stuff
-
-Seed database:
-
-```ruby
-george = User.where(name: Faker::Name.name).create
-bob = User.where(name: Faker::Name.name).create
-
-2.times do
-  post = george.posts.create(
-    title: [Faker::Hacker.adjective, Faker::Hacker.noun].join(' ').titleize,
-    body: Faker::Hacker.say_something_smart
-  )
-  post.comments.create(body: Faker::Hipster.sentence, user: bob)
-end
+Add more friends:
+```sh
+hpf data:='{
+  "type": "friends",
+  "attributes": {
+    "first-name": "X",
+    "last-name": "Y",
+    "email": "xy@example.com"
+  }
+}'
 ```
-
-Ruby:
-
-```ruby
-# gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
-class PostsController < JSONAPI:ResourceController
-end
-```
-
-Seed DB:
-
-```ruby
-george = User.where(name: Faker::Name.name).create
-bob = User.where(name: Faker::Name.name).create
-
-2.times do
-  post = george.posts.create(
-    title: [Faker::Hacker.adjective, Faker::Hacker.noun].join(' ').titleize,
-    body: Faker::Hacker.say_something_smart
-  )
-  post.comments.create(body: Faker::Hipster.sentence, user: bob)
-end
-```
-
-```bash
-rails g model User name:string
-rails g model Post user:references title:string body:text
-rails g model Comment post:references user:references body:text
-rails db:migrate
-
-rails g serializer post
-```
-
-```ruby
-gem 'faker'
-
-gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
-gem 'jsonapi-resources'
-
-ActiveModelSerializers.config.adapter = :json_api # serializers folder
+and immediately delete them (update friends id’s from the output above):
+```sh
+curl -X DELETE localhost:3000/friends/2 -i
+curl -X DELETE localhost:3000/friends/2 -i
+curl -X DELETE localhost:3000/friends/2 | jq
 ```

@@ -1,1 +1,129 @@
 ## Working with Relationships
+
+Create _Article_ model.
+```sh
+rails g model article name:string available:boolean
+rails db:migrate
+```
+
+Create _Article_ resource and _ArticleController_.
+```sh
+rails g jsonapi:resource article
+rails g controller articles
+```
+
+Add validations to _Article_ model and attributes to _ArticleResource_.
+```ruby
+# app/models/friend.rb
+class Article < ActiveRecord::Base
+  validates :name, presence: true
+end
+# app/resources/article_resource.rb
+class ArticleResource < JSONAPI::Resource
+  attributes :name, :available
+end
+```
+Finally add `jsonapi_resources :articles` to routes
+```ruby
+# config/routes.rb.
+Rails.application.routes.draw do
+  jsonapi_resources :friends
+  jsonapi_resources :articles
+end
+```
+and update _ArticlesController_.
+```ruby
+# app/controllers/articles_controller.rb
+class ArticlesController < JSONAPI::ResourceController
+end
+```
+
+### Check if everything works as expected
+
+- [ ] export requests
+
+
+## Keeping track of loans
+
+```sh
+rails g model loan \
+  notes:text \
+  returned:boolean \
+  friend:references \
+  article:references
+rails db:migrate
+```
+```sh
+rails g jsonapi:resource loan
+rails g controller loans
+```
+```ruby
+# config/routes.rb.
+Rails.application.routes.draw do
+  jsonapi_resources :friends
+  jsonapi_resources :articles
+  jsonapi_resources :loans
+end
+```
+```sh
+rails routes
+#   Prefix Verb   URI Pattern             Controller#Action
+#  friends ...
+# articles ...
+#    loans GET    /loans(.:format)        loans#index
+#         POST    /loans(.:format)        loans#create
+#     loan GET    /loans/:id(.:format)    loans#show
+#        PATCH    /loans/:id(.:format)    loans#update
+#          PUT    /loans/:id(.:format)    loans#update
+#       DELETE    /loans/:id(.:format)    loans#destroy
+```
+and update _LoansController_.
+```ruby
+# app/controllers/loans_controller.rb
+class LoansController < JSONAPI::ResourceController
+end
+```
+
+TODO: check GET /loans endpoint
+
+
+## Exposin the relationships in JSON API
+
+First, update _Loan_ model.
+```ruby
+class Loan < ActiveRecord::Base
+  belongs_to :friend
+  belongs_to :article
+
+  validates :friend, presence: true
+  validates :article, presence: true
+end
+```
+
+Once our models are wired up, we want to expose the relationships in JSON
+API. To do so, we use a syntax similar to the one we just used, but this time
+we’ll write the relationships in the resource classes.
+
+* see [JSONAPI::Resources Guide](http://jsonapi-resources.com/v0.10/guide/resources.html#Relationships)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## ?

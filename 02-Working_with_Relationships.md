@@ -1,5 +1,7 @@
 ## Working with Relationships
 
+* [Guide](http://jsonapi-resources.com/v0.8/guide/)
+
 Create _Article_ model.
 ```sh
 rails g model article name:string available:boolean
@@ -87,16 +89,57 @@ end
 TODO: check GET /loans endpoint
 
 
-## Exposin the relationships in JSON API
+## Exposing the relationships in JSON API
 
-First, update _Loan_ model.
+First, update all models.
 ```ruby
+# app/models/loan.rb
 class Loan < ActiveRecord::Base
   belongs_to :friend
   belongs_to :article
 
   validates :friend, presence: true
   validates :article, presence: true
+end
+
+# app/models/article.rb
+class Article < ActiveRecord::Base
+  has_many :loans
+
+  validates :name, presence: true
+end
+
+# app/models/friend.rb
+class Friend < ActiveRecord::Base
+  has_many :loans
+
+  validates :first_name, presence: true
+  validates :email, presence: true
+  validates :last_name, presence: true
+end
+```
+And and all resources.
+```ruby
+# app/resources/loan_resource.rb
+class LoanResource < JSONAPI::Resource
+  has_one :article # resources use has_one instead of belongs_to
+  has_one :friend
+  
+  attributes :notes, :returned
+end
+
+# app/resources/article_resource.rb
+class ArticleResource < JSONAPI::Resource
+  has_many :loans
+
+  attributes :name, :available
+end
+
+# app/resources/friend_resource.rb
+class FriendResource < JSONAPI::Resource
+  has_many :loans
+
+  attributes :first_name, :last_name, :email, :twitter
 end
 ```
 
@@ -107,8 +150,86 @@ we’ll write the relationships in the resource classes.
 * see [JSONAPI::Resources Guide](http://jsonapi-resources.com/v0.10/guide/resources.html#Relationships)
 
 
+### Creating _loans_
 
+TODO: add saved requests
 
+```sh
+http localhost:3000/loans
+```
+```json
+{
+    "data": [
+        {
+            "attributes": {
+                "notes": "necessarily wash",
+                "returned": false
+            },
+            "id": "1",
+            "links": {
+                "self": "http://localhost:3000/loans/1"
+            },
+            "relationships": {
+                "article": {
+                    "links": {
+                        "related": "http://localhost:3000/loans/1/article",
+                        "self": "http://localhost:3000/loans/1/relationships/article"
+                    }
+                },
+                "friend": {
+                    "links": {
+                        "related": "http://localhost:3000/loans/1/friend",
+                        "self": "http://localhost:3000/loans/1/relationships/friend"
+                    }
+                }
+            },
+            "type": "loans"
+        }
+    ]
+}
+```
+```sh
+http localhost:3000/loans | jq '.data[0].relationships.friend.links.self'
+```
+
+Get friend via relationships.
+```sh
+curl -s localhost:3000/loans/1/relationships/friend | jq
+```
+```json
+{
+  "links": {
+    "self": "http://localhost:3000/loans/1/relationships/friend",
+    "related": "http://localhost:3000/loans/1/friend"
+  },
+  "data": {
+    "type": "friends",
+    "id": "1"
+  }
+}
+```
+
+Get friend directly.
+```sh
+curl -s localhost:3000/loans/1/friend | jq
+```
+```json
+{
+  "data": {
+    "id": "1",
+    "type": "friends",
+    "links": {
+      "self": "http://localhost:3000/friends/1"
+    },
+    "attributes": {
+      "first-name": "Cyryl",
+      "last-name": "Metody",
+      "email": "cm@example.com",
+      "twitter": null
+    }
+  }
+}
+```
 
 
 

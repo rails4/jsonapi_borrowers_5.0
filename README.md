@@ -212,7 +212,7 @@ cpf -d '{
     "type": "friends",
     "attributes": {
       "first-name": "Cyryl",
-      "last-name":"Metody"
+      "last-name": "Metody"
     }
   }
 }' \

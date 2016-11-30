@@ -67,18 +67,6 @@ Rails.application.routes.draw do
   jsonapi_resources :loans
 end
 ```
-```sh
-rails routes
-#   Prefix Verb   URI Pattern             Controller#Action
-#  friends ...
-# articles ...
-#    loans GET    /loans(.:format)        loans#index
-#         POST    /loans(.:format)        loans#create
-#     loan GET    /loans/:id(.:format)    loans#show
-#        PATCH    /loans/:id(.:format)    loans#update
-#          PUT    /loans/:id(.:format)    loans#update
-#       DELETE    /loans/:id(.:format)    loans#destroy
-```
 and update _LoansController_.
 ```ruby
 # app/controllers/loans_controller.rb
@@ -124,7 +112,7 @@ And and all resources.
 class LoanResource < JSONAPI::Resource
   has_one :article # resources use has_one instead of belongs_to
   has_one :friend
-  
+
   attributes :notes, :returned
 end
 
@@ -152,87 +140,199 @@ we’ll write the relationships in the resource classes.
 
 ### Creating _loans_
 
-TODO: add saved requests
-
 ```sh
-http localhost:3000/loans
+rails routes
+#                      Prefix Verb      URI Pattern
+#  friend_relationships_loans GET       /friends/:friend_id/relationships/loans
+#                             POST      /friends/:friend_id/relationships/loans
+#                             PUT|PATCH /friends/:friend_id/relationships/loans
+#                             DELETE    /friends/:friend_id/relationships/loans
+#                friend_loans GET       /friends/:friend_id/loans
+#                     friends GET       /friends
+#                             POST      /friends
+#                      friend GET       /friends/:id
+#                             PATCH     /friends/:id
+#                             PUT       /friends/:id
+#                             DELETE    /friends/:id
+# article_relationships_loans GET       /articles/:article_id/relationships/loans
+#                             POST      /articles/:article_id/relationships/loans
+#                             PUT|PATCH /articles/:article_id/relationships/loans
+#                             DELETE    /articles/:article_id/relationships/loans
+#               article_loans GET       /articles/:article_id/loans
+#                    articles GET       /articles
+#                             POST      /articles
+#                     article GET       /articles/:id
+#                             PATCH     /articles/:id
+#                             PUT       /articles/:id
+#                             DELETE    /articles/:id
+#  loan_relationships_article GET       /loans/:loan_id/relationships/article
+#                             PUT|PATCH /loans/:loan_id/relationships/article
+#                             DELETE    /loans/:loan_id/relationships/article
+#                loan_article GET       /loans/:loan_id/article
+#   loan_relationships_friend GET       /loans/:loan_id/relationships/friend
+#                             PUT|PATCH /loans/:loan_id/relationships/friend
+#                             DELETE    /loans/:loan_id/relationships/friend
+#                 loan_friend GET       /loans/:loan_id/friend
+#                       loans GET       /loans
+#                             POST      /loans
+#                        loan GET       /loans/:id
+#                             PATCH     /loans/:id
+#                             PUT       /loans/:id
+#                             DELETE    /loans/:id
 ```
-```json
-{
-    "data": [
-        {
-            "attributes": {
-                "notes": "necessarily wash",
-                "returned": false
-            },
-            "id": "1",
-            "links": {
-                "self": "http://localhost:3000/loans/1"
-            },
-            "relationships": {
-                "article": {
-                    "links": {
-                        "related": "http://localhost:3000/loans/1/article",
-                        "self": "http://localhost:3000/loans/1/relationships/article"
-                    }
-                },
-                "friend": {
-                    "links": {
-                        "related": "http://localhost:3000/loans/1/friend",
-                        "self": "http://localhost:3000/loans/1/relationships/friend"
-                    }
+
+**Execute saved request.**
+
+Using _jq_ to filter data from the response.
+```sh
+http localhost:3000/articles
+http localhost:3000/articles | jq '.data[0]'
+http localhost:3000/articles | jq '.data[0].links.self'
+http localhost:3000/articles | jq '.data[0].relationships.loans.links'
+```
+
+Create an article.
+
+Bash.
+```sh
+curl -X "POST" "http://localhost:3000/articles" \
+     -H "Accept: application/vnd.api+json" \
+     -H "Content-Type: application/vnd.api+json" \
+     -d '{
+           "data": {
+             "type": "articles",
+             "attributes": {
+               "name": "Make Your Own Neural Network",
+               "available": "true"
+             }
+           }
+         }'
+```
+
+Ruby.
+```ruby
+def send_request
+  uri = URI('http://localhost:3000/articles')
+
+  # Create client
+  http = Net::HTTP.new(uri.host, uri.port)
+  dict = {
+            "data" => {
+                "type" => "articles",
+                "attributes" => {
+                    "name" => "Make Your Own Neural Network",
+                    "available" => "true"
                 }
-            },
-            "type": "loans"
+            }
         }
-    ]
-}
-```
-```sh
-http localhost:3000/loans | jq '.data[0].relationships.friend.links.self'
+  body = JSON.dump(dict)
+
+  # Create Request
+  req =  Net::HTTP::Post.new(uri)
+  # Add headers
+  req.add_field "Accept", "application/vnd.api+json"
+  # Add headers
+  req.add_field "Content-Type", "application/vnd.api+json"
+  # Set body
+  req.body = body
+
+  # Fetch Request
+  res = http.request(req)
+  puts "Response HTTP Status Code: #{res.code}"
+  puts "Response HTTP Response Body: #{res.body}"
+rescue StandardError => e
+  puts "HTTP Request failed (#{e.message})"
+end
 ```
 
-Get friend via relationships.
+
+### Updating articles and loans
+
+Get article 1
 ```sh
-curl -s localhost:3000/loans/1/relationships/friend | jq
-```
-```json
-{
-  "links": {
-    "self": "http://localhost:3000/loans/1/relationships/friend",
-    "related": "http://localhost:3000/loans/1/friend"
-  },
-  "data": {
-    "type": "friends",
-    "id": "1"
-  }
-}
+curl -s localhost:3000/article/1 | jq
+# {
+#   "data": {
+#     "id": "1",
+#     "type": "articles",
+#     "links": {
+#       "self": "http://localhost:3000/articles/1"
+#     },
+#     "attributes": {
+#       "name": "Salomon Exo Motion Long",
+#       "available": true
+#     },
+#   ...
 ```
 
-Get friend directly.
+Update article 1.
 ```sh
-curl -s localhost:3000/loans/1/friend | jq
-```
-```json
+curl -X "PATCH" "http://localhost:3000/articles/1" \
+     -H "Accept: application/vnd.api+json" \
+     -H "Content-Type: application/vnd.api+json" \
+     -d '
 {
   "data": {
     "id": "1",
-    "type": "friends",
-    "links": {
-      "self": "http://localhost:3000/friends/1"
-    },
+    "type": "articles",
     "attributes": {
-      "first-name": "Cyryl",
-      "last-name": "Metody",
-      "email": "cm@example.com",
-      "twitter": null
+      "name": "Salomon Exo Motion XXL"
     }
   }
-}
+}'
+```
+
+Get loan 1.
+```sh
+curl -s localhost:3000/loans/1 | jq
+# {
+#   "data": {
+#     "id": "1",
+#     "type": "loans",
+#     "links": {
+#       "self": "http://localhost:3000/loans/1"
+#     },
+#     "attributes": {
+#       "notes": "necessarily wash",
+#       "returned": false
+#     },
+#     ...
 ```
 
 
+Update loan 1.
+```sh
+curl -X "PATCH" "http://localhost:3000/loans/1" \
+     -H "Accept: application/vnd.api+json" \
+     -H "Content-Type: application/vnd.api+json" \
+     -d '
+{
+  "data": {
+    "id": "1",
+    "type": "loans",
+    "attributes": {
+      "notes": "size XXL (black)"
+    }
+  }
+}'
+```
 
+### Updating relationships
+
+Through `self` URL.
+```sh
+curl -s http://localhost:3000/loans/1/relationships/friend \
+  -X PATCH \
+  -H "Accept: application/vnd.api+json" \
+  -H "Content-Type: application/vnd.api+json" \
+  -d '
+{
+  "data": {
+    "id": "4",
+    "type": "friends"
+  }
+}'
+```
 
 
 

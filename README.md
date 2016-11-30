@@ -160,10 +160,16 @@ curl -s localhost:3000/friends -X POST -H 'Content-Type: application/vnd.api+jso
 | jq
 ```
 
-HTTPie doesn’t work:
+HTTPie needs an appropriate Accept header.
 ```sh
-http --json POST 'http://localhost:3000/friends' 'Content-Type':'application/vnd.api+json' \
-    data:='{"type": "friends", "attributes": {}}'
+http POST 'http://localhost:3000/friends' \
+ 'Accept':'application/vnd.api+json' \
+ 'Content-Type':'application/vnd.api+json' \
+  data:='{
+    "type": "friends",
+    "attributes": {
+    }
+  }'
 ```
 
 Try to delete some friends:
@@ -207,8 +213,35 @@ class FriendResource < JSONAPI::Resource
 end
 ```
 ```sh
-cpf -d '{"data":{"type":"friends", "attributes":{"first-name":"Cyryl", "last-name":"Metody"}}}' \
+cpf -d '{
+  "data": {
+    "type": "friends",
+    "attributes": {
+      "first-name": "Cyryl",
+      "last-name":"Metody"
+    }
+  }
+}' \
 | jq
+```
+or use HTTPie
+```sh
+http POST 'http://localhost:3000/friends' \
+ 'Accept':'application/vnd.api+json' \
+ 'Content-Type':'application/vnd.api+json' \
+  data:='{
+    "type": "friends",
+    "attributes": {
+      "first-name": "Cyryl",
+      "last-name": "Metody",
+      "email": "cm@example.com"
+    }
+  }'
+```
+
+Define `hpf` alias:
+```sh
+alias hpf="http POST 'http://localhost:3000/friends' 'Accept':'application/vnd.api+json' 'Content-Type':'application/vnd.api+json'"
 ```
 
 

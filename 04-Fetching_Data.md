@@ -64,14 +64,53 @@ curl -s -X GET localhost:3000/friends/1 \
 
 ### Sorting
 
+Ascending.
 ```sh
 curl -s localhost:3000/friends?sort=last-name |  jq '.data | map(.attributes)'
 ```
-
-
+Descending.
+```sh
+curl -s localhost:3000/friends?sort=-last-name \
+  |  jq '.data | map(.attributes)'
+curl -s localhost:3000/friends?sort=-first-name,last-name \
+  |  jq '.data | map(.attributes)'
+```
 
 
 ### Filtering
 
+Unlike sorting and sparse fields, JSON API doesn’t have a strict specification
+on how filtering35 should work. The keyword filter is reserved for this kind of
+operation and the server API designer can implement any strategy, based on their
+own needs.
+
+Update _FriendResource_.
+```ruby
+# app/resources/friend_resource.rb
+class FriendResource < JSONAPI::Resource
+  attributes :first_name, :last_name, :email, :twitter
+
+  has_many :loans, acts_as_set: true
+
+  filter :id
+  filters :last_name, :first_name, :email
+end
+```
+
+Examples of filtering.
+```sh
+curl -s -X GET http://localhost:3000/friends -d 'filter[id]=2,3' \
+  | jq '.data | map(.id)'
+curl -s -X GET http://localhost:3000/friends -d 'filter[id]=2,3' \
+  | jq '.data | map(.attributes)'
+curl -s -X GET http://localhost:3000/friends -d 'filter[first-name]=Tomasz' \
+  | jq '.data | map (.attributes)'
+# | jq '.data | map (.attributes."first-name")'
+```
+
+* zob. też [JSONAPI::Resources. Filters](http://jsonapi-resources.com/v0.8/guide/resources.html#Filters)
+
 
 ### Pagination
+
+* [JSONAPI::Resources. Pagination](http://jsonapi-resources.com/v0.8/guide/resources.html#Pagination)

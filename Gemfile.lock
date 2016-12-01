@@ -40,6 +40,7 @@ GEM
       tzinfo (~> 1.1)
     arel (7.1.4)
     ast (2.3.0)
+    awesome_print (1.7.0)
     builder (3.2.2)
     byebug (9.0.6)
     cheat (1.3.3)
@@ -141,6 +142,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_print (~> 1.7.0)
   byebug
   cheat
   faker (~> 1.6.6)

@@ -232,44 +232,12 @@ http POST 'http://localhost:3000/friends' \
     }
   }'
 ```
-or execute in browser console:
-``````js
-// create a friend (POST http://localhost:3000/friends)
-jQuery.ajax({
-    url: "http://localhost:3000/friends",
-    type: "POST",
-    headers: {
-      "Accept": "application/vnd.api+json",
-      "Content-Type": "application/vnd.api+json",
-    },
-    processData: false,
-    data: {
-	    "data": {
-		    "type": "friends",
-		    "attributes": {
-			    "first-name": "Ryszard",
-			    "last-name": "K",
-			    "email": "rk@example.com"
-		    }
-	    }
-   }
-})
-.done(function(data, textStatus, jqXHR) {
-    console.log("HTTP Request Succeeded: " + jqXHR.status);
-    console.log(data);
-})
-.fail(function(jqXHR, textStatus, errorThrown) {
-    console.log("HTTP Request Failed");
-})
-.always(function() {
-    /* ... */
-});
-```
-
 
 Define `hpf` alias:
 ```sh
-alias hpf="http POST 'http://localhost:3000/friends' 'Accept':'application/vnd.api+json' 'Content-Type':'application/vnd.api+json'"
+alias hpf="http POST 'http://localhost:3000/friends' \
+  'Accept':'application/vnd.api+json' \
+  'Content-Type':'application/vnd.api+json'"
 ```
 
 

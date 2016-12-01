@@ -16,7 +16,7 @@ end
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS),
 # making cross-origin AJAX possible
-gem 'rack-cors', '~> 0.4'
+gem 'rack-cors', '~> 0.4', require: 'rack/cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution

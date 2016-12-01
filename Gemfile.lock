@@ -1,10 +1,3 @@
-GIT
-  remote: https://github.com/tiagopog/jsonapi-utils.git
-  revision: d33b357d1ba6a17eca041f167188087f5a584ba8
-  specs:
-    jsonapi-utils (0.5.0.beta4)
-      jsonapi-resources (~> 0.8.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -152,7 +145,6 @@ DEPENDENCIES
   cheat
   faker (~> 1.6.6)
   jsonapi-resources (~> 0.8.1)
-  jsonapi-utils!
   listen (~> 3.0.5)
   puma (~> 3.0)
   rack-cors (~> 0.4)

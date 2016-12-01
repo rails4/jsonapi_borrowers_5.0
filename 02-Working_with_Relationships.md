@@ -1,6 +1,6 @@
 ## Working with Relationships
 
-* [Guide](http://jsonapi-resources.com/v0.8/guide/)
+* [JSONAPI::Resources Guide](http://jsonapi-resources.com/v0.8/guide/)
 
 Create _Article_ model.
 ```sh

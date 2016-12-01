@@ -8,15 +8,16 @@ gem 'puma', '~> 3.0'
 gem 'sqlite3'
 
 # this change will be made in bundler v2.0
-git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
-  "https://github.com/#{repo_name}.git"
-end
+# git_source(:github) do |repo_name|
+#   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
+#   "https://github.com/#{repo_name}.git"
+# end
 # gem 'jsonapi-utils', github: 'tiagopog/jsonapi-utils'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS),
 # making cross-origin AJAX possible
-gem 'rack-cors', '~> 0.4', require: 'rack/cors'
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS
+# gem 'rack-cors', '~> 0.4', require: 'rack/cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution

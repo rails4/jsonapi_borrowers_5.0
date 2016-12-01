@@ -333,18 +333,3 @@ curl -s http://localhost:3000/loans/1/relationships/friend \
   }
 }'
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## ?

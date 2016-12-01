@@ -110,6 +110,13 @@ curl -s -X GET http://localhost:3000/friends -d 'filter[first-name]=Tomasz' \
 
 * zob. też [JSONAPI::Resources. Filters](http://jsonapi-resources.com/v0.8/guide/resources.html#Filters)
 
+Uncomment `filter :first_name` in _friend_resource.rb_,
+restart Rails server and run this command:
+```sh
+curl -s -X GET http://localhost:3000/friends -d 'filter[first-name]=to' \
+  | jq '.data | map(.attributes)'
+```
+
 
 ### Pagination
 

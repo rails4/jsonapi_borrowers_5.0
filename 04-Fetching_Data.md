@@ -8,6 +8,8 @@ rails db:drop
 rails db:seed
 ```
 
+* Check code in [db/seeds.rb](db/seeds.rb).
+
 Check seeded data on `rails console`.
 ```ruby
 Friend.count

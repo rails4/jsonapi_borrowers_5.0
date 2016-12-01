@@ -8,10 +8,10 @@ gem 'puma', '~> 3.0'
 gem 'sqlite3'
 
 # this change will be made in bundler v2.0
-# git_source(:github) do |repo_name|
-#   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
-#   "https://github.com/#{repo_name}.git"
-# end
+git_source(:github) do |repo_name|
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
+  "https://github.com/#{repo_name}.git"
+end
 # gem 'jsonapi-utils', github: 'tiagopog/jsonapi-utils'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS),
@@ -31,7 +31,7 @@ group :development do
 
   gem 'awesome_print', '~> 1.7.0'
   gem 'cheat', require: false
-  gem 'faker', '~> 1.6.6'
+  gem 'faker', github: 'stympy/faker'
   gem 'rubocop', require: false # for Atom editor
 end
 

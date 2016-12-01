@@ -61,6 +61,16 @@ end
   end
 end
 
+friends_total = Friend.count
+articles_total = Article.count
+prng = Random.new
+
+# create random loans
 256.times do
-  # create random loans
+  promo = Faker::Commerce.promotion_code
+  Loan.find_or_create_by(notes: promo) do |loan|
+    loan.returned = false
+    loan.friend_id = prng.rand(friends_total) + 1
+    loan.article_id = prng.rand(articles_total) + 1
+  end
 end

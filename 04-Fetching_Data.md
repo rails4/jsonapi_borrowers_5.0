@@ -1,6 +1,6 @@
 ## Fetching Data
 
-* [JSON:API, Fetching](http://jsonapi.org/format/1.0/#fetching)
+* [JSON:API. Fetching Data](http://jsonapi.org/format/1.0/#fetching)
 
 Update database with random data.
 ```sh

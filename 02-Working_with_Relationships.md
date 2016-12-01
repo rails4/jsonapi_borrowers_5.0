@@ -8,10 +8,10 @@ rails g model article name:string available:boolean
 rails db:migrate
 ```
 
-Create _Article_ resource and _ArticleController_.
+Create _ArticleResource_ and _ArticleController_.
 ```sh
 rails g jsonapi:resource article
-rails g controller articles
+rails g jsonapi:controller articles # NEW, what is the difference
 ```
 
 Add validations to _Article_ model and attributes to _ArticleResource_.
@@ -40,10 +40,6 @@ class ArticlesController < JSONAPI::ResourceController
 end
 ```
 
-### Check if everything works as expected
-
-- [ ] export requests
-
 
 ## Keeping track of loans
 
@@ -57,7 +53,7 @@ rails db:migrate
 ```
 ```sh
 rails g jsonapi:resource loan
-rails g controller loans
+rails g jsonapi:controller loans # NEW
 ```
 ```ruby
 # config/routes.rb.
@@ -73,8 +69,6 @@ and update _LoansController_.
 class LoansController < JSONAPI::ResourceController
 end
 ```
-
-TODO: check GET /loans endpoint
 
 
 ## Exposing the relationships in JSON API
@@ -181,7 +175,10 @@ rails routes
 #                             DELETE    /loans/:id
 ```
 
-**Execute saved request.**
+* Load into _Paw_ and execute requests from
+  _Documents/Rails_5/JSONAPI_Paw/JSONAPI-Working_with_Relationships.paw_
+
+----
 
 Using _jq_ to filter data from the response.
 ```sh
@@ -298,7 +295,6 @@ curl -s localhost:3000/loans/1 | jq
 #     },
 #     ...
 ```
-
 
 Update loan 1.
 ```sh

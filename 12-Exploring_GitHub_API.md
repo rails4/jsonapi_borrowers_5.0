@@ -14,7 +14,7 @@ require 'net/http'
 require 'net/https'
 
 # increase rate limits with OAuth2 token (GET)
-def send_request
+def send_get_request
   uri = URI('https://api.github.com/rate_limit')
 
   # Create client
@@ -22,7 +22,7 @@ def send_request
   http.use_ssl = true
   http.verify_mode = OpenSSL::SSL::VERIFY_PEER
 
-  # Create Request
+  # Create GET Request
   req =  Net::HTTP::Get.new(uri)
   # Add headers
   req.add_field "Authorization", "token [PERSONAL ACCESS TOKEN]"
@@ -34,4 +34,6 @@ def send_request
 rescue StandardError => e
   puts "HTTP Request failed (#{e.message})"
 end
+
+send_get_request
 ```

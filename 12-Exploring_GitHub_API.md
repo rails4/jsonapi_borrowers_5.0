@@ -94,9 +94,9 @@ end
 send_post_request("raz_dwa_trzy", 'Ruby')
 ```
 
-Pagination.
+Pagination with curl
 
-``````sh
+```sh
 curl https://api.github.com/repos/rails/rails/pulls
 # show headers only
 curl -I https://api.github.com/repos/rails/rails/pulls
@@ -104,6 +104,15 @@ curl -I https://api.github.com/repos/rails/rails/pulls
 #   rel="next", \
 #   <https://api.github.com/repositories/8514/pulls?page=23>; \
 #   rel="last"
+```
 
-http https://api.github.com/repos/rails/rails/pulls
+or use HTTPie:
+
+```sh
+# print only request headers
+http --print=H https://api.github.com/repos/rails/rails/pulls
+# print only response headers
+http --print=h https://api.github.com/repos/rails/rails/pulls
+# print only response body
+http --print=b https://api.github.com/repos/rails/rails/pulls
 ```

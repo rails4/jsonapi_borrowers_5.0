@@ -5,9 +5,14 @@
   increase hourly rate limits from 60 to 5000:
   - [Creating an access token for command-line use](https://help.github.com/articles/creating-an-access-token-for-command-line-use/) –
   Personal Access Token
+1. [Gitignore Templates API](https://developer.github.com/changes/2012-11-29-gitignore-templates/):
+  - `curl https://api.github.com/gitignore/templates`
 1. [API v3](https://developer.github.com/v3/)
 
+
 ### Exploring API in Ruby
+
+Check rate limits.
 
 ```ruby
 require 'net/http'
@@ -36,4 +41,52 @@ rescue StandardError => e
 end
 
 send_get_request
+```
+
+Almost any meaningful use of the GitHub API will involve some level of
+repository information.
+
+Create a repository.
+
+```ruby
+require 'net/http'
+require 'net/https'
+require 'json'
+
+# create public repository (POST )
+def send_post_request(repo_name, gitignore_template)
+  uri = URI('https://api.github.com/user/repos')
+
+  # Create client
+  http = Net::HTTP.new(uri.host, uri.port)
+  http.use_ssl = true
+  http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+  dict = {
+            "private" => false,
+            "name" => repo_name,
+            "auto_init" => true,
+            "gitignore_template" => gitignore_template
+        }
+  body = JSON.dump(dict)
+
+  # Create Request
+  req =  Net::HTTP::Post.new(uri)
+  # Add headers
+  req.add_field "Authorization", "token [PERSONAL ACCESS TOKEN]"
+  # Add headers
+  req.add_field "Content-Type", "application/json; charset=utf-8"
+  # Set body
+  req.body = body
+
+  # Fetch Request
+  res = http.request(req)
+  puts "Response HTTP Status Code: #{res.code}"
+  puts "Response HTTP Response Body: #{res.body}"
+rescue StandardError => e
+  puts "HTTP Request failed (#{e.message})"
+end
+
+# list all gitignore templates:
+#   curl https://api.github.com/gitignore/templates
+send_post_request("raz_dwa_trzy", 'Ruby')
 ```

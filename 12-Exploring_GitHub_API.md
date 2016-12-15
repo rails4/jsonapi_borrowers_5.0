@@ -8,6 +8,9 @@
 1. [Gitignore Templates API](https://developer.github.com/changes/2012-11-29-gitignore-templates/):
   - `curl https://api.github.com/gitignore/templates`
 1. [API v3](https://developer.github.com/v3/)
+1. [Basics of Authentication](https://developer.github.com/guides/basics-of-authentication/)
+  - [rest-client](https://github.com/rest-client/rest-client)
+  - use _RestClient.{get,post}_ in the two examples below
 
 
 ### Exploring API in Ruby
@@ -89,4 +92,18 @@ end
 # list all gitignore templates:
 #   curl https://api.github.com/gitignore/templates
 send_post_request("raz_dwa_trzy", 'Ruby')
+```
+
+Pagination.
+
+``````sh
+curl https://api.github.com/repos/rails/rails/pulls
+# show headers only
+curl -I https://api.github.com/repos/rails/rails/pulls
+# Link: <https://api.github.com/repositories/8514/pulls?page=2>; \
+#   rel="next", \
+#   <https://api.github.com/repositories/8514/pulls?page=23>; \
+#   rel="last"
+
+http https://api.github.com/repos/rails/rails/pulls
 ```

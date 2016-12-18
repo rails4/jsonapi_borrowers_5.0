@@ -13,8 +13,7 @@ TODO: import data to SQLite
 | relh      | Relative Humidity in % |
 | drct      | Wind Direction in degrees from north |
 | sknt      | Wind Speed in km/h |
-| p01i      | One hour precipitation for the period from the observation time |
-|           | to the time of the previous hourly precipitation reset. |
+| p01i      | One hour precipitation for the period from the observation time to the time of the previous hourly precipitation reset. |
 |           | This varies slightly by site. Values are in inches. |
 |           | This value may or may not contain frozen precipitation melted |
 |           | by some device on the sensor or estimated by some other means. |

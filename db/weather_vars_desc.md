@@ -1,7 +1,8 @@
 # EPGD Variable Descriptions
 
 For original variable descriptions see
-[ASOS Network](https://mesonet.agron.iastate.edu/request/download.phtml?network=NY_ASOS)
+[ASOS Network](https://mesonet.agron.iastate.edu/request/download.phtml?network=NY_ASOS).
+Some variables were renamed and convertet to SI.
 
 | Variable   | Description                             |
 | :--------- | :-------------------------------------- |

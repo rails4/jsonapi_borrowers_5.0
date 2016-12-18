@@ -2,7 +2,7 @@
 
 For original variable descriptions see
 [ASOS Network](https://mesonet.agron.iastate.edu/request/download.phtml?network=NY_ASOS).
-Some variables were renamed and convertet to SI.
+Some variables were renamed and convertet to Międzynarodowy Układ Jednostek Miar (SI).
 
 | Variable   | Description                             |
 | :--------- | :-------------------------------------- |

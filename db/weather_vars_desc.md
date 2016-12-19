@@ -72,6 +72,12 @@ So, delete table
 sqlite> drop table epgd15s;
 ```
 
+Ale to polecenie działa (wcześniej należy zainstalować pakiet _csvkit_).
+```sh
+gunzip -c weather_epgd_2015.csv.gz \
+  | csvsql  --no-create --insert --tables epgd15s --db sqlite:///development.sqlite3
+```
+
 
 ## Import with ActiveRecord
 
@@ -89,6 +95,7 @@ end
 
 Check Ruby schema in _db/schema.rb_:
 ```ruby
+# station,time,temp,dewp,humid,wind_dir,wind_speed,wind_gust,precip,pressure,visib,year,month,day,hour,minute,time_hour,id
 create_table "epgd15s", force: :cascade do |t|
   t.string   "station"
   t.datetime "time"
@@ -111,6 +118,30 @@ create_table "epgd15s", force: :cascade do |t|
   t.index ["time_hour"], name: "index_epgd15s_on_time_hour"
 end
 ```
+```sql
+.schema --indent epgd15s
+CREATE TABLE "epgd15s"(
+  "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  "station" varchar,
+  "time" datetime,
+  "temp" float,
+  "dewp" float,
+  "humid" float,
+  "wind_dir" float,
+  "wind_speed" float,
+  "wind_gust" float,
+  "precip" float,
+  "pressure" float,
+  "visib" float,
+  "year" integer,
+  "month" integer,
+  "day" integer,
+  "hour" integer,
+  "minute" integer,
+  "time_hour" datetime
+);
+```
+
 
 Now, run these commands on the Rails console.
 

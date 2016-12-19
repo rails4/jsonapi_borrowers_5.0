@@ -113,7 +113,6 @@ end
 
 Check Ruby schema in _db/schema.rb_:
 ```ruby
-# station,time,temp,dewp,humid,wind_dir,wind_speed,wind_gust,precip,pressure,visib,year,month,day,hour,minute,time_hour,id
 create_table "epgd15s", force: :cascade do |t|
   t.string   "station"
   t.datetime "time"

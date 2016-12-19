@@ -33,16 +33,17 @@ TODO:
 rails generate migration CreateEpgd15s \
   station:string time:datetime:index \
   temp:float dewp:float humid:float wind_dir:float \
-  wind_speed:float wind_gust:float precip:float mslp:float visib:float \
+  wind_speed:float wind_gust:float precip:float pressure:float visib:float \
   year:integer month:integer day:integer hour:integer minute:integer \
   time_hour:datetime:index
 rails db:migrate
 ```
 
-Check epgd15s schema:
+Check epgd15s schema on the SQLite console
 ``sh
 sqlite3 db/development.sqlite3
-sqlite> .schema --indent epgd15s
+```sql
+.schema --indent epgd15s
 ```
 ```sql
 CREATE TABLE "epgd15s"(
@@ -56,7 +57,7 @@ CREATE TABLE "epgd15s"(
   "wind_speed" float,
   "wind_gust" float,
   "precip" float,
-  "mslp" float,
+  "pressure" float,
   "visib" float,
   "year" integer,
   "month" integer,
@@ -66,13 +67,18 @@ CREATE TABLE "epgd15s"(
   "time_hour" datetime
 );
 ```
-```sh
-sqlite> .separator ','
-sqlite> .import db/weather_epgd_2015.csv epgd15s
-```
-This importing does not work!
 
-Usuful stuff:
+Run these commands on the SQLite console:
+```sh
+.separator ','
+.import db/weather_epgd_2015.csv epgd15s
+```
+
+*This importing does not work!*
+
+
+## Usuful stuff
+
 ``sh
 rails db:version
 rails db:rollback STEP=1
@@ -96,9 +102,8 @@ create_table "epgd15s", force: :cascade do |t|
   t.float    "wind_dir"
   t.float    "wind_speed"
   t.float    "wind_gust"
-  t.float    "pressure"
   t.float    "precip"
-  t.float    "mslp"
+  t.float    "pressure"
   t.float    "visib"
   t.integer  "year"
   t.integer  "month"
@@ -111,14 +116,19 @@ create_table "epgd15s", force: :cascade do |t|
 end
 ```
 
-Run these commands on the Rails console.
+## Run these commands on the Rails console.
+
 ```ruby
-# require 'cvs' # not ne
+# require 'cvs' # not necessary in the Rails console
 
+# check -- read everything into table
 all = CSV.read(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
+# try inserting a record into the _epgd15s_ table
+# remove inserted records
 
-csv = CSV.new(open("db/weather_epgd_2015.csv"),
-    :headers => true, :header_converters => :symbol, :converters => :all)
+# if everything works run these commands
+
+csv = CSV.new(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
 csv.each { |row| puts row }
 
 csv = CSV.new(open("db/a.csv"), :headers => true, :header_converters => :symbol, :converters => :all)

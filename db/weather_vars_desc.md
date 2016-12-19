@@ -70,3 +70,9 @@ CREATE TABLE "epgd15s"(
 sqlite> .separator ','
 sqlite> .import db/weather_epgd_2015.csv epgd15s
 ```
+
+Usuful stuff:
+``sh
+rails db:version
+rails db:rollback STEP=1
+```

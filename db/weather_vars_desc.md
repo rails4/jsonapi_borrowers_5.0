@@ -2,7 +2,7 @@
 
 For original variable descriptions see
 [ASOS Network](https://mesonet.agron.iastate.edu/request/download.phtml?network=NY_ASOS).
-Some variables were renamed and convertet to Système international d'unités, SI.
+Some variables were renamed and converted to Système international d'unités, SI.
 
 | Variable   | Description                             |
 | :--------- | :-------------------------------------- |

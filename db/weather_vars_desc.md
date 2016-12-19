@@ -70,9 +70,42 @@ CREATE TABLE "epgd15s"(
 sqlite> .separator ','
 sqlite> .import db/weather_epgd_2015.csv epgd15s
 ```
+This importing does not work!
 
 Usuful stuff:
 ``sh
 rails db:version
 rails db:rollback STEP=1
+```
+
+## Import with ActiveRecord
+
+Define _Epgd15_ model.
+```ruby
+class Epgd15 < ActiveRecord::Base
+end
+```
+Run migration and check schema:
+```ruby
+create_table "epgd15s", force: :cascade do |t|
+  t.string   "station"
+  t.datetime "time"
+  t.float    "temp"
+  t.float    "dewp"
+  t.float    "humid"
+  t.float    "wind_dir"
+  t.float    "wind_speed"
+  t.float    "wind_gust"
+  t.float    "precip"
+  t.float    "mslp"
+  t.float    "visib"
+  t.integer  "year"
+  t.integer  "month"
+  t.integer  "day"
+  t.integer  "hour"
+  t.integer  "minute"
+  t.datetime "time_hour"
+  t.index ["time"], name: "index_epgd15s_on_time"
+  t.index ["time_hour"], name: "index_epgd15s_on_time_hour"
+end
 ```

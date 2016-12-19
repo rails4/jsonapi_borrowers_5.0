@@ -163,7 +163,7 @@ csv.each_slice(2000) do |slice|
 end
 ```
 
-Or, when data are gzipped, run these commands (uses 'mass_insert' gem)
+Or, when data are gzipped, run these commands (uses _mass_insert_ gem)
 ```ruby
 Zlib::GzipReader.open("db/weather_epgd_2015.csv.gz") do |gz|
   csv = CSV.new(gz, :headers => true, :header_converters => :symbol, :converters => :all)

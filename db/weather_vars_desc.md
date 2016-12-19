@@ -117,7 +117,8 @@ Now, run these commands on the Rails console.
 
 # check -- read everything into table
 all = CSV.read(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
-# try inserting a record into the _epgd15s_ table
+
+# try inserting only one record into the _epgd15s_ table
 w1 = all[1].to_hash
 Epgd15.create w1
 Epgd15.first

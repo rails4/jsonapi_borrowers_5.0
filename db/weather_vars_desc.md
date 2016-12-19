@@ -56,16 +56,15 @@ rails db:migrate
 
 ```sh
 sqlite3 db/development.sqlite3
-```
-```sql
-.schema --indent epgd15s
+sqlite> .schema --indent epgd15s
 ```
 
-**Unfortunately this import does not work!**
+**Unfortunately the import below does not work!**
 ```sh
 sqlite> .separator ','
 sqlite> .import db/weather_epgd_2015.csv epgd15s
 ```
+
 So, delete table
 ```sql
 sqlite> drop table epgd15s;

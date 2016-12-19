@@ -79,7 +79,7 @@ Run these commands on the SQLite console:
 
 ## Usuful stuff
 
-``sh
+```sh
 rails db:version
 rails db:rollback STEP=1
 ```

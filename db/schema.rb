@@ -10,13 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161130132437) do
+ActiveRecord::Schema.define(version: 20161219085729) do
 
   create_table "articles", force: :cascade do |t|
     t.string   "name"
     t.boolean  "available"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "epgd15s", force: :cascade do |t|
+    t.string   "station"
+    t.datetime "time"
+    t.float    "temp"
+    t.float    "dewp"
+    t.float    "humid"
+    t.float    "wind_dir"
+    t.float    "wind_speed"
+    t.float    "wind_gust"
+    t.float    "precip"
+    t.float    "mslp"
+    t.float    "visib"
+    t.integer  "year"
+    t.integer  "month"
+    t.integer  "day"
+    t.integer  "hour"
+    t.integer  "minute"
+    t.datetime "time_hour"
+    t.index ["time"], name: "index_epgd15s_on_time"
+    t.index ["time_hour"], name: "index_epgd15s_on_time_hour"
   end
 
   create_table "friends", force: :cascade do |t|

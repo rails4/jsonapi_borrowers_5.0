@@ -136,61 +136,11 @@ create_table "epgd15s", force: :cascade do |t|
 end
 ```
 
-Now, run these commands on the Rails console.
+Now, run these commands on the Rails console
+(we use the _mass_insert_ gem).
 
 ```ruby
 # require 'cvs' # not necessary in the Rails console
-
-# check -- read everything into table
-all = CSV.read(open("db/weather_epgd_2015.csv"),
-    :headers => true, :header_converters => :symbol, :converters => :all)
-
-# try inserting only one record into the _epgd15s_ table
-w1 = all[1].to_hash
-Epgd15.create w1
-Epgd15.first
-ap Epgd15.first
-# <Epgd15:0x007fab035f1468> {
-#             :id => 2,
-#        :station => "EPGD",
-#           :time => Thu, 01 Jan 2015 01:00:00 UTC +00:00,
-#           :temp => -4.0,
-#           :dewp => -4.0,
-#          :humid => 100.0,
-#       :wind_dir => 290.0,
-#     :wind_speed => 7.2,
-#      :wind_gust => nil,
-#         :precip => 0.0,
-#       :pressure => nil,
-#          :visib => 2.49,
-#           :year => 2015,
-#          :month => 1,
-#            :day => 1,
-#           :hour => 1,
-#         :minute => 0,
-#      :time_hour => Thu, 01 Jan 2015 01:00:00 UTC +00:00
-# }
-
-# remove inserted record(s)
-Epgd15.first.destroy
-Epgd15.count # should be 0
-Epgd15.destroy_all # very slow
-Epgd15.in_batches(of: 1000).delete_all # quick
-```
-
-If everything worked, then run these commands
-
-```ruby
-csv = CSV.new(open("db/weather_epgd_2015.csv"),
-    :headers => true, :header_converters => :symbol, :converters => :all)
-csv.each_slice(2000) do |slice|
-  slice[0].delete(:id)
-  ap slice[0].to_hash
-end
-```
-
-Or, when data are gzipped, run these commands (uses _mass_insert_ gem)
-```ruby
 Zlib::GzipReader.open("db/weather_epgd_2015.csv.gz") do |gz|
   csv = CSV.new(gz, :headers => true, :header_converters => :symbol, :converters => :all)
   csv.each_slice(256) do |slice|
@@ -209,3 +159,35 @@ end
 ```
 
 See also [ActiveRecord::Batches](http://api.rubyonrails.org/classes/ActiveRecord/Batches.html).
+
+
+### If somthing goes wrong...
+
+Then try to run these commands.
+
+```ruby
+# read everything into table
+all = CSV.read(open("db/weather_epgd_2015.csv"),
+    :headers => true, :header_converters => :symbol, :converters => :all)
+
+# try inserting only one record into the _epgd15s_ table
+w1 = all[1].to_hash
+Epgd15.create w1
+Epgd15.first
+ap Epgd15.first
+
+# remove inserted record(s)
+Epgd15.first.destroy
+Epgd15.count # should be 0
+Epgd15.destroy_all # very slow
+Epgd15.in_batches(of: 1000).delete_all # quick
+```
+
+```ruby
+csv = CSV.new(open("db/weather_epgd_2015.csv"),
+    :headers => true, :header_converters => :symbol, :converters => :all)
+csv.each_slice(2000) do |slice|
+  slice[0].delete(:id)
+  ap slice[0].to_hash
+end
+```

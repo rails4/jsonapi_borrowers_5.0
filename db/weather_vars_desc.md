@@ -40,23 +40,51 @@ NATIVE_DATABASE_TYPES = {
  }
 ```
 
-TODO:
-
-- [ ] R – remove first column (with col numbers) when writing to CSV
-- [ ] R – round floats to two decimals
-
 1\. Create migration and migrate.
 
 ```sh
 rails generate migration CreateEpgd15s \
   station:string time:datetime:index \
   temp:float dewp:float humid:float wind_dir:float \
-  wind_speed:float wind_gust:float precip:float mslp:float visib:float \
+  wind_speed:float wind_gust:float precip:float pressure:float visib:float \
   year:integer month:integer day:integer hour:integer minute:integer \
   time_hour:datetime:index
 rails db:migrate
 ```
-_db/schema.rb_:
+
+2\. Check epgd15s schema on the SQLite console
+``sh
+sqlite3 db/development.sqlite3
+```sql
+.schema --indent epgd15s
+```
+
+**Unfortunately this import does not work!**
+```sh
+sqlite> .separator ','
+sqlite> .import db/weather_epgd_2015.csv epgd15s
+```
+So, delete table
+```sql
+sqlite> drop table epgd15s;
+```
+
+
+## Import with ActiveRecord
+
+Check the version of the latest migration:
+```sh
+rails db:version
+rails db:rollback STEP=1 # eventually rollback
+```
+
+Define _Epgd15_ model.
+```ruby
+class Epgd15 < ActiveRecord::Base
+end
+```
+
+Check Ruby schema in _db/schema.rb_:
 ```ruby
 create_table "epgd15s", force: :cascade do |t|
   t.string   "station"
@@ -80,41 +108,20 @@ create_table "epgd15s", force: :cascade do |t|
   t.index ["time_hour"], name: "index_epgd15s_on_time_hour"
 end
 ```
-Check _epgd15s_ schema:
-```sh
-sqlite3 db/development.sqlite3
-sqlite> .schema --indent epgd15s
-```
-
-**Unfortunately this import does not work!**
-```sh
-sqlite> .separator ','
-sqlite> .import db/weather_epgd_2015.csv epgd15s
-sqlite> drop table epgd15s;
-```
-
-## Import with ActiveRecord
-
-Check, eventually rollback.
-``sh
-rails db:version
-rails db:rollback STEP=1
-```
-
-Define _Epgd15_ model in _app/models/epgd15.rb_:
-```ruby
-class Epgd15 < ActiveRecord::Base
-end
-```
 
 Now, run these commands on the Rails console.
+
 ```ruby
-# require 'cvs' # not ne
+# require 'cvs' # not necessary in the Rails console
 
+# check -- read everything into table
 all = CSV.read(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
+# try inserting a record into the _epgd15s_ table
+# remove inserted records
 
-csv = CSV.new(open("db/weather_epgd_2015.csv"),
-    :headers => true, :header_converters => :symbol, :converters => :all)
+# if everything works run these commands
+
+csv = CSV.new(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
 csv.each { |row| puts row }
 
 csv = CSV.new(open("db/a.csv"), :headers => true, :header_converters => :symbol, :converters => :all)

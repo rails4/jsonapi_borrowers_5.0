@@ -161,7 +161,7 @@ end
 See also [ActiveRecord::Batches](http://api.rubyonrails.org/classes/ActiveRecord/Batches.html).
 
 
-### If somthing goes wrong...
+### If something goes awry...
 
 Then try to run these commands.
 

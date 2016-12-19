@@ -140,7 +140,7 @@ Now, run these commands on the Rails console
 (we use the _mass_insert_ gem).
 
 ```ruby
-# require 'cvs' # not necessary in the Rails console
+# require 'cvs' # not necessary if on the Rails console
 Zlib::GzipReader.open("db/weather_epgd_2015.csv.gz") do |gz|
   csv = CSV.new(gz, :headers => true, :header_converters => :symbol, :converters => :all)
   csv.each_slice(256) do |slice|

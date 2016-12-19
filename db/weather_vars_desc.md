@@ -76,7 +76,7 @@ sqlite> drop table epgd15s;
 Check the version of the latest migration:
 ```sh
 rails db:version
-rails db:rollback STEP=1 # eventually rollback
+rails db:rollback STEP=1 # if necessary
 ```
 
 Define _Epgd15_ model.

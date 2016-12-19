@@ -53,7 +53,8 @@ rails db:migrate
 ```
 
 2\. Check epgd15s schema on the SQLite console
-``sh
+
+```sh
 sqlite3 db/development.sqlite3
 ```sql
 .schema --indent epgd15s

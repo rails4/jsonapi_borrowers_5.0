@@ -117,31 +117,65 @@ Now, run these commands on the Rails console.
 # check -- read everything into table
 all = CSV.read(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
 # try inserting a record into the _epgd15s_ table
-# remove inserted records
+w1 = all[1].to_hash
+Epgd15.create w1
+Epgd15.first
+ap Epgd15.first
+# <Epgd15:0x007fab035f1468> {
+#             :id => 2,
+#        :station => "EPGD",
+#           :time => Thu, 01 Jan 2015 01:00:00 UTC +00:00,
+#           :temp => -4.0,
+#           :dewp => -4.0,
+#          :humid => 100.0,
+#       :wind_dir => 290.0,
+#     :wind_speed => 7.2,
+#      :wind_gust => nil,
+#         :precip => 0.0,
+#       :pressure => nil,
+#          :visib => 2.49,
+#           :year => 2015,
+#          :month => 1,
+#            :day => 1,
+#           :hour => 1,
+#         :minute => 0,
+#      :time_hour => Thu, 01 Jan 2015 01:00:00 UTC +00:00
+# }
 
-# if everything works run these commands
+# remove inserted record(s)
+Epgd15.first.destroy
+Epgd15.count # should be 0
+Epgd15.destroy_all # very slow
+Epgd15.in_batches(of: 1000).delete_all # quick
+```
 
+If everything worked, then run these commands
+
+```ruby
 csv = CSV.new(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
-csv.each { |row| puts row }
-
-csv = CSV.new(open("db/a.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
-csv.each { |row| row.delete(0); ap row.to_hash }
-{
-      :faa => "0P2",
-     :name => "Shoestring Aviation Airfield",
-      :lat => 39.7948244,
-      :lon => -76.6471914,
-      :alt => 1000,
-       :tz => -5,
-      :dst => "U",
-    :tzone => "America/New_York"
-}
-
-Zlib::GzipReader.open("db/a.csv.gz") do |gz|
-  csv = CSV.new(gz, :headers => true, :header_converters => :symbol, :converters => :all)
-  csv.each do |row|
-    row.delete(0)
-    ap row
-  end
+csv.each_slice(2000) do |slice|
+  slice[0].delete(:id)
+  ap slice[0].to_hash
 end
 ```
+
+Or, when data are gzipped, run these commands (uses 'mass_insert' gem)
+```ruby
+Zlib::GzipReader.open("db/weather_epgd_2015.csv.gz") do |gz|
+  csv = CSV.new(gz, :headers => true, :header_converters => :symbol, :converters => :all)
+  csv.each_slice(256) do |slice|
+    ah = slice.map do |elem|
+      elem.delete(:id)
+      elem.to_hash
+    end
+    Epgd15.mass_insert ah
+  end
+end
+Epgd15.count # should be equal 8714
+
+Epgd15.in_batches(of: 2000) do |relation|
+  ap relation.first
+end
+```
+
+See also [ActiveRecord::Batches](http://api.rubyonrails.org/classes/ActiveRecord/Batches.html).

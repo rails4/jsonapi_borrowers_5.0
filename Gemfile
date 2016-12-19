@@ -29,6 +29,7 @@ end
 
 group :development do
   gem 'listen', '~> 3.0.5'
+  gem 'mass_insert', '~> 0.2.4'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 

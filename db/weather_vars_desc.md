@@ -60,9 +60,11 @@ sqlite> .schema --indent epgd15s
 ```
 
 **Unfortunately the import below does not work!**
-```sh
-sqlite> .separator ','
-sqlite> .import db/weather_epgd_2015.csv epgd15s
+```sql
+.separator ','
+.import db/weather_epgd_2015.csv epgd15s
+-- ...
+-- db/weather_epgd_2015.csv:8715: INSERT failed: datatype mismatch
 ```
 
 So, delete table

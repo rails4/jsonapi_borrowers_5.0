@@ -96,6 +96,7 @@ create_table "epgd15s", force: :cascade do |t|
   t.float    "wind_dir"
   t.float    "wind_speed"
   t.float    "wind_gust"
+  t.float    "pressure"
   t.float    "precip"
   t.float    "mslp"
   t.float    "visib"
@@ -107,5 +108,37 @@ create_table "epgd15s", force: :cascade do |t|
   t.datetime "time_hour"
   t.index ["time"], name: "index_epgd15s_on_time"
   t.index ["time_hour"], name: "index_epgd15s_on_time_hour"
+end
+```
+
+Run these commands on the Rails console.
+```ruby
+# require 'cvs' # not ne
+
+all = CSV.read(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
+
+csv = CSV.new(open("db/weather_epgd_2015.csv"),
+    :headers => true, :header_converters => :symbol, :converters => :all)
+csv.each { |row| puts row }
+
+csv = CSV.new(open("db/a.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
+csv.each { |row| row.delete(0); ap row.to_hash }
+{
+      :faa => "0P2",
+     :name => "Shoestring Aviation Airfield",
+      :lat => 39.7948244,
+      :lon => -76.6471914,
+      :alt => 1000,
+       :tz => -5,
+      :dst => "U",
+    :tzone => "America/New_York"
+}
+
+Zlib::GzipReader.open("db/a.csv.gz") do |gz|
+  csv = CSV.new(gz, :headers => true, :header_converters => :symbol, :converters => :all)
+  csv.each do |row|
+    row.delete(0)
+    ap row
+  end
 end
 ```

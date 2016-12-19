@@ -10,7 +10,7 @@ class CreateEpgd15s < ActiveRecord::Migration[5.0]
       t.float :wind_speed
       t.float :wind_gust
       t.float :precip
-      t.float :mslp
+      t.float :pressure
       t.float :visib
       t.integer :year
       t.integer :month

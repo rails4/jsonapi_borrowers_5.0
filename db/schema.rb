@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20161219085729) do
     t.float    "wind_speed"
     t.float    "wind_gust"
     t.float    "precip"
-    t.float    "mslp"
+    t.float    "pressure"
     t.float    "visib"
     t.integer  "year"
     t.integer  "month"

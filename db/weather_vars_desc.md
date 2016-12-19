@@ -66,3 +66,7 @@ CREATE TABLE "epgd15s"(
   "time_hour" datetime
 );
 ```
+```sh
+sqlite> .separator ','
+sqlite> .import db/weather_epgd_2015.csv epgd15s
+```

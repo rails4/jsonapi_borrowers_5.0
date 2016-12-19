@@ -116,7 +116,8 @@ Now, run these commands on the Rails console.
 # require 'cvs' # not necessary in the Rails console
 
 # check -- read everything into table
-all = CSV.read(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
+all = CSV.read(open("db/weather_epgd_2015.csv"),
+    :headers => true, :header_converters => :symbol, :converters => :all)
 
 # try inserting only one record into the _epgd15s_ table
 w1 = all[1].to_hash
@@ -154,7 +155,8 @@ Epgd15.in_batches(of: 1000).delete_all # quick
 If everything worked, then run these commands
 
 ```ruby
-csv = CSV.new(open("db/weather_epgd_2015.csv"), :headers => true, :header_converters => :symbol, :converters => :all)
+csv = CSV.new(open("db/weather_epgd_2015.csv"),
+    :headers => true, :header_converters => :symbol, :converters => :all)
 csv.each_slice(2000) do |slice|
   slice[0].delete(:id)
   ap slice[0].to_hash

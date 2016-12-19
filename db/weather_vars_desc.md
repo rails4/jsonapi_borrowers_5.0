@@ -56,6 +56,7 @@ rails db:migrate
 
 ```sh
 sqlite3 db/development.sqlite3
+```
 ```sql
 .schema --indent epgd15s
 ```

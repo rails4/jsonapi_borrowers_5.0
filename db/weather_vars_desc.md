@@ -15,10 +15,52 @@ Some variables were renamed and converted to Système international d'unités, S
 | wind_speed | Wind Speed in km/h |
 | wind_gust  | Wind Gust in km/h |
 | precip     | One hour precipitation for the period from the observation time to the time of the previous hourly precipitation reset. This varies slightly by site. Values are in inches. This value may or may not contain frozen precipitation melted by some device on the sensor or estimated by some other means. Unfortunately, we do not know of an authoritative database denoting which station has which sensor. |
-| pressure   | Sea Level Pressure in millibar |
+| pressure   | Sea Level Pressure in millibar (missing in EPGD data)|
 | visib      | Visibility in kilometers |
 
 Plus extra convenience variables: year, month, day, hour, minute, time_hour.
+
+Create ActiveRecord migration and create empty _epgd15s_ table
+
+```sh
+rails generate migration CreateEpgd15s \
+  station:string time:datetime:index \
+  temp:float dewp:float humid:float wind_dir:float \
+  wind_speed:float wind_gust:float precip:float pressure:float visib:float \
+  year:integer month:integer day:integer hour:integer minute:integer \
+  time_hour:datetime:index
+rails db:migrate
+```
+
+Check the _epgd15s_ schema on the _sqlite3_ console:
+
+```sh
+sqlite3 db/development.sqlite3
+sqlite> .schema --indent epgd15s
+```
+```sql
+.schema --indent epgd15s
+CREATE TABLE "epgd15s"(
+  "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+  "station" varchar,
+  "time" datetime,
+  "temp" float,
+  "dewp" float,
+  "humid" float,
+  "wind_dir" float,
+  "wind_speed" float,
+  "wind_gust" float,
+  "precip" float,
+  "pressure" float, -- missing in EPGD data
+  "visib" float,
+  "year" integer,
+  "month" integer,
+  "day" integer,
+  "hour" integer,
+  "minute" integer,
+  "time_hour" datetime
+);
+```
 
 ## Importing data into SQLite3
 
@@ -40,48 +82,6 @@ NATIVE_DATABASE_TYPES = {
  }
 ```
 
-1\. Create migration and migrate.
-
-```sh
-rails generate migration CreateEpgd15s \
-  station:string time:datetime:index \
-  temp:float dewp:float humid:float wind_dir:float \
-  wind_speed:float wind_gust:float precip:float pressure:float visib:float \
-  year:integer month:integer day:integer hour:integer minute:integer \
-  time_hour:datetime:index
-rails db:migrate
-```
-
-2\. Check epgd15s schema on the SQLite console
-
-```sh
-sqlite3 db/development.sqlite3
-sqlite> .schema --indent epgd15s
-```
-```sql
-.schema --indent epgd15s
-CREATE TABLE "epgd15s"(
-  "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-  "station" varchar,
-  "time" datetime,
-  "temp" float,
-  "dewp" float,
-  "humid" float,
-  "wind_dir" float,
-  "wind_speed" float,
-  "wind_gust" float,
-  "precip" float,
-  "pressure" float,
-  "visib" float,
-  "year" integer,
-  "month" integer,
-  "day" integer,
-  "hour" integer,
-  "minute" integer,
-  "time_hour" datetime
-);
-```
-
 **Unfortunately the import below does not work!**
 ```sql
 .separator ','
@@ -90,7 +90,7 @@ CREATE TABLE "epgd15s"(
 -- db/weather_epgd_2015.csv:8715: INSERT failed: datatype mismatch
 ```
 
-Ale to polecenie działa (wcześniej należy zainstalować pakiet _csvkit_).
+But this works (needs _csvkit_ package; install with _pip_).
 ```sh
 gunzip -c weather_epgd_2015.csv.gz \
   | csvsql  --no-create --insert --tables epgd15s --db sqlite:///development.sqlite3

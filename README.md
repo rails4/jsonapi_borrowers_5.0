@@ -53,7 +53,7 @@ bundle install
 Begin with generating a model and accompanying resource:
 ```sh
 rails g model friend first_name:string last_name:string email:string twitter:string
-rails db: migrate
+rails db:migrate
 rails generate jsonapi:resource friend
 ```
 

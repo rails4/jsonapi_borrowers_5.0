@@ -12,6 +12,13 @@ available.
 We’ll need to keep track of the status of every article (e.g. _borrowed_ or
 _returned_) and we’ll need the option of adding notes to it.
 
+Other approaches:
+
+1. [ServerLess Framework](https://serverless.com) – build auto-scaling, pay-per-execution,
+  event-driven apps on AWS Lambda
+1. [Fission](http://fission.io) – serverless functions for Kubernetes.
+  - [repo](https://github.com/platform9/fission)
+
 ----
 
 **Purpose:** Want to learn about JSON API by error messages driven development,

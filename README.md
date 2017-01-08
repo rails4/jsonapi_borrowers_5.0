@@ -17,7 +17,7 @@ _returned_) and we’ll need the option of adding notes to it.
 **Purpose:** Want to learn about JSON API by error messages driven development,
 [EMD2](http://www.progressrail.com) in short.
 
-* Ruby version: 2.3.3
+* Ruby version: 2.4.0
 * Gem dependencies:
   - [jsonapi-resources](https://github.com/cerebris/jsonapi-resources), 0.8.1
   - consider use of
@@ -269,7 +269,7 @@ end
 ```
 Tests should fail.
 ```sh
-rake test test/models/friend_test.rb # use rake -- not rails
+rails test test/models/friend_test.rb
 ```
 ```ruby
 # models/friend.rb
@@ -284,7 +284,7 @@ Tests should pass.
 rake test test/models/friend_test.rb # use rake -- not rails
 ```
 ```sh
-cfp -d'{"data":{"type":"friends", "attributes":{}}}' \
+cpf -d'{"data":{"type":"friends", "attributes":{}}}' \
 | jq
 ```
 ```json
@@ -370,5 +370,4 @@ and immediately delete them (update friends id’s from the output above):
 ```sh
 curl -X DELETE localhost:3000/friends/2 -i
 curl -X DELETE localhost:3000/friends/2 -i
-curl -X DELETE localhost:3000/friends/2 | jq
 ```

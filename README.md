@@ -133,9 +133,7 @@ http localhost:3000/friends
 ```
 This yields expected result, since we don’t yet have any friends.
 
-
-## TODO: Trying to get friends
-
+**NOTE:**
 **jsonapi_resources** offers two ways to help bring together our controllers and
 resources: we inherit from _JSONAPI::ResourceController_.
 ```ruby
@@ -144,7 +142,7 @@ end
 ```
 
 
-## Trying to create a friend
+## TODO: Creating a friend
 
 ```sh
 curl -s -i localhost:3000/friends -X POST --data-binary ''

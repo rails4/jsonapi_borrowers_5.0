@@ -53,8 +53,13 @@ computation a function.
 
 Generate a new Rails application preconfigure for API only apps:
 ```sh
-rails new jsonapi_borrowers_5.0 --api
-cd jsonapi_borrowers_5.0
+rails new borrowers_5.0.1 --api # use Rails 5.0.1
+cd borrowers_5.0.1
+```
+
+Uncomment _rack-cors_ gem and add gem _jsonapi-resources_ (v0.8.1) to _Gemfile_.
+
+```sh
 bundle install
 ```
 
@@ -62,14 +67,15 @@ Begin with generating a model and accompanying resource:
 ```sh
 rails g model friend first_name:string last_name:string email:string twitter:string
 rails db:migrate
-rails generate jsonapi:resource friend
 ```
 
-_app/resources/friend_resource.rb_
-```ruby
-class FriendResource < JSONAPI::Resource
-end
+Generate _FriendResource_ and _FriendsController_.
+```sh
+rails g jsonapi:resource   friend
+rails g jsonapi:controller friends
 ```
+
+Now, remove (unused) _application_controller.rb_.
 
 Resource:
 ```json
@@ -79,7 +85,8 @@ Resource:
   "attributes": {
     "first-name": "Adolfo",
     "last-name": "Builes",
-    "email": "ab@example.com"
+    "email": "ab@example.com",
+    "twitter": null
   }
 }
 ```
@@ -88,6 +95,8 @@ Run Rails server
 ```sh
 rails server
 ```
+
+# Do some checks
 
 Curl or HTTPie?
 ```sh
@@ -100,27 +109,14 @@ Show HTTP status codes:
 cheat http
 ```
 
-## Trying to get friends
-
-```sh
-http localhost:3000/friends
-```
-displays this error message (on terminal running rails server)
+This errror message (on terminal running rails server)
 ```
 Started GET "/friends" for ::1 at 2016-11-28 09:28:36 +0100
   ActiveRecord::SchemaMigration Load (0.4ms)  SELECT "schema_migrations".* FROM "schema_migrations"
 
 ActionController::RoutingError (No route matches [GET] "/friends"):
 ```
-
-We have not defined a route for a friend.
-```sh
-rails g controller friends
-  create  app/controllers/friends_controller.rb
-  invoke  test_unit
-  create  test/controllers/friends_controller_test.rb
-```
-and define in _routes.rb_ routes to friends resource
+says that we have not defined a route for a friend resource.
 ```ruby
 # config/routes.rb
 Rails.application.routes.draw do
@@ -128,21 +124,7 @@ Rails.application.routes.draw do
 end
 ```
 
-**jsonapi_resources** offers two ways to help bring together our controllers and
-resources: we can either inherit from _JSONAPI::ResourceController_, or use the
-_ActsAsResourceController_ module.
-
-Let change the controller to use _JSONAPI::ResourceController_:
-```ruby
-# class ApplicationController < ActionController::API
-# end
-# class FriendsController < ApplicationController
-# end
-class FriendsController < JSONAPI::ResourceController
-end
-```
-
-Now, try
+Now, try hit/get _friends_ endpoint/resource once more.
 ```sh
 http localhost:3000/friends
 {
@@ -150,6 +132,16 @@ http localhost:3000/friends
 }
 ```
 This yields expected result, since we don’t yet have any friends.
+
+
+## TODO: Trying to get friends
+
+**jsonapi_resources** offers two ways to help bring together our controllers and
+resources: we inherit from _JSONAPI::ResourceController_.
+```ruby
+class FriendsController < JSONAPI::ResourceController
+end
+```
 
 
 ## Trying to create a friend

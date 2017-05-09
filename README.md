@@ -1,4 +1,4 @@
-# Borrowers JSON API
+# JSON API – Borrowers 
 
 Przykład z książki – Adolfo Builes, _JSON API by Example_ –
 
@@ -11,6 +11,9 @@ available.
 
 We’ll need to keep track of the status of every article (e.g. _borrowed_ or
 _returned_) and we’ll need the option of adding notes to it.
+
+
+## Serverless Computing
 
 The basic idea behind **serverless computing** is to make the unit of
 computation a function.
@@ -25,7 +28,7 @@ computation a function.
 **Purpose:** Want to learn about JSON API by error messages driven development,
 [EMD2](http://www.progressrail.com) in short.
 
-* Ruby version: 2.4.0
+* Ruby version: 2.4.1
 * Gem dependencies:
   - [jsonapi-resources](https://github.com/cerebris/jsonapi-resources), 0.8.1
   - consider use of
@@ -63,7 +66,7 @@ Uncomment _rack-cors_ gem and add gem _jsonapi-resources_ (v0.8.1) to _Gemfile_.
 bundle install
 ```
 
-Begin with generating a model and accompanying resource:
+Begin with generating a model **and accompanying resource**:
 ```sh
 rails g model friend first_name:string last_name:string email:string twitter:string
 rails db:migrate
@@ -142,7 +145,7 @@ end
 ```
 
 
-## TODO: Creating a friend
+## Creating a friend
 
 ```sh
 curl -s -i localhost:3000/friends -X POST --data-binary ''
